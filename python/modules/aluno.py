@@ -12,25 +12,31 @@ class Aluno:
     def cadastrar(self, db=MySQL()):
         query = """
             INSERT INTO alunos (
-                nome,
-                email,
-                cpf,
-                telefone,
-                endereco
             ) VALUES (
                 %s,%s,%s,%s,%s
                 )
             """
         values = (
-                self.nome,
-                self.email,
-                self.cpf,
-                self.telefone,
-                self.endereco
-            )
+            self.nome,
+            self.email,
+            self.cpf,
+            self.telefone,
+            self.endereco
+        )
         
 
         return db.execute_query(query, values)
+    def listar(db: MySQL):
+        query = """
+        nome,
+        email,
+        cpf,
+        telefone,
+        endereco
+    FROM
+        alunos;
+        """
+        return db.execute_query(query)
 
     def editar(self):
         pass

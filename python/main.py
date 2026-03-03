@@ -10,6 +10,8 @@ banco = MySQL(
 
 banco.connect()
 
+consulta = Aluno().listar(banco)
+
 aluno = Aluno(
     "José Maria",
     "jose.maria@email.com",

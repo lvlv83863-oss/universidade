@@ -1,10 +1,7 @@
 from modules.mysql import MySQL
 from modules.aluno import Aluno
 
-import sys
-
 from PySide6.QtWidgets import (
-    QApplication, 
     QWidget,
     QVBoxLayout,
     QLabel,
@@ -13,22 +10,27 @@ from PySide6.QtWidgets import (
     QMessageBox
 )
 
-class TelaCadastro():
-    def __init__(self):
-        self.app = QApplication(sys.argv)
+class Cadastrar:
+    def __init__(self, app):
+        self.app = app
         self.janela = QWidget()
         self.layout = QVBoxLayout()
-        self.banco =  MySQL()
-        
+        self.banco = MySQL()
+
         self.campos = {}
 
         self.configurar_janela()
         self.criar_componentes()
 
     def configurar_janela(self):
-        self.janela.setWindowTitle("Cadastro ALuno")
-        # adaptar redimensionamento para tamanho dinamico
-        self.janela.resize(1200, 600)
+        self.janela.setWindowTitle("Cadastrar Aluno")
+
+        screen = self.app.primaryScreen().geometry()
+        largura = int(screen.width() * 0.4)
+        altura = int(screen.height() * 0.6)
+
+        self.janela.resize(largura, altura)
+        self.janela.setMinimumSize(400, 500)
         self.janela.setLayout(self.layout)
 
     def criar_componentes(self):
@@ -54,13 +56,36 @@ class TelaCadastro():
 
         botao_cadastro.clicked.connect(self.cadastrar)
 
+    def validar_campos(self):
+        dados = {chave: campo.text().strip() for chave, campo in self.campos.items()}
+
+        for chave, valor in dados.items():
+            if not valor:
+                return False, f"O campo '{chave}' não pode estar vazio."
+
+        if not dados["cpf"].isdigit() or len(dados["cpf"]) != 11:
+            return False, "CPF deve conter exatamente 11 números."
+
+        return True, dados
+
     def cadastrar(self):
+
+        valido, resultado = self.validar_campos()
+
+        if not valido:
+            QMessageBox.warning(
+                self.janela,
+                "Validação",
+                resultado
+            )
+            return
+
         aluno = Aluno(
-            self.campos["nome"].text(),
-            self.campos["email"].text(),
-            self.campos["cpf"].text(),
-            self.campos["telefone"].text(),
-            self.campos["endereco"].text(),
+            resultado["nome"],
+            resultado["email"],
+            resultado["cpf"],
+            resultado["telefone"],
+            resultado["endereco"],
         )
 
         try:
@@ -68,18 +93,17 @@ class TelaCadastro():
             aluno.cadastrar(self.banco)
 
             QMessageBox.information(
-                self. janela,
+                self.janela,
                 "Sucesso",
                 "Aluno Cadastrado!"
             )
             self.limpar_campos()
 
-
         except Exception as e:
             QMessageBox.critical(
                 self.janela,
                 "Erro",
-                f"Erro ao cadastrar:{e}"
+                f"Erro ao Cadastrar: {e}"
             )
 
         finally:
@@ -88,9 +112,4 @@ class TelaCadastro():
     def limpar_campos(self):
         for campo in self.campos.values():
             campo.clear()
-
-if __name__=="__main__":
-    tela = TelaCadastro()
-    tela.janela.show()
-
-    sys.exit(tela.app.exec())
+ 
