@@ -63,4 +63,3 @@ class Listar:
                 self.tabela.setItem(linha, 5, QTableWidgetItem("True"))
             else:
                 self.tabela.setItem(linha, 5, QTableWidgetItem("False"))
- 

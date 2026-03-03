@@ -9,7 +9,6 @@ from PySide6.QtWidgets import (
     QPushButton,
     QMessageBox
 )
-
 class Cadastrar:
     def __init__(self, app):
         self.app = app

@@ -1,4 +1,4 @@
--- Active: 1771955155213@@127.0.0.1@3306@universidade
+-- Active: 1770140831871@@127.0.0.1@3306@biblioteca
 CREATE DATABASE universidade;
 
 USE universidade;

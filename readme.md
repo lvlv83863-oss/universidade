@@ -74,3 +74,23 @@ Este é um projeto desktop, utilizando as tecnologias:
 - **Material icon theme**: tema para Colorir as Pastas.
 - **GIt lens**: Interface Grafica para o Versionamento git integrado ao VSCode 
 - **MySQL**: SGBD (sistema genrenciador de banco de dados). permite conectar o usuario com o servidor MySql, possibilitando criar base de dados, tabelas, incluir e modificar atributos e registros
+
+## Build
+- **Dependências**
+
+- ~~pip install pyinstaller~~
+```
+pip install -r requirements.txt
+```
+**Congelar Dependências**
+```
+pip freeze > requirements.txt
+```
+**Diretório Raiz do Projeto:** Pasta Python 
+```
+cd python
+```
+```
+pyinstaller --onefile --windowed app.py
+```
+**O executável estará em:** dist/app.exe
